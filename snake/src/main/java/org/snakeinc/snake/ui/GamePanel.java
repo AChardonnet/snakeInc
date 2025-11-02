@@ -38,7 +38,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
     private void startGame() {
         snake = new Snake();
-        Basket.getInstance().refillIfEmptyOrPartial(3);
+        Basket.getInstance().refillIfEmptyOrPartial(1);
         timer = new Timer(100, this);
         timer.start();
         running = true;
@@ -66,7 +66,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         if (running) {
             try {
                 snake.move(direction);
-                Basket.getInstance().refillIfEmptyOrPartial(3);
+                Basket.getInstance().refillIfEmptyOrPartial(1);
             } catch (OutOfPlayException | SelfCollisionException exception) {
                 timer.stop();
                 running = false;

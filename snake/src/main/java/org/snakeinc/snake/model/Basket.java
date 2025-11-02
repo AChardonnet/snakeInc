@@ -23,14 +23,12 @@ public class Basket {
     }
 
     public void addApple() {
-        Apple newApple = new Apple();
-        newApple.getTile().gameObjectsInTile.add(newApple);
-        apples.add(newApple);
+        apples.add(new Apple());
     }
 
     public void removeApple(Apple apple) {
-        apples.remove(apple);
         apple.getTile().gameObjectsInTile.remove(apple);
+        apples.remove(apple);
     }
 
     public boolean isEmpty() {

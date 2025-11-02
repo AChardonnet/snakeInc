@@ -24,7 +24,7 @@ public class Snake implements GameObject {
     }
 
     public void eat(Apple apple) {
-        body.add(apple.getTile());
+        body.addFirst(apple.getTile());
         apple.getTile().getGameObjectsInTile().add(this);
         Basket.getInstance().removeApple(apple);
     }
@@ -53,16 +53,22 @@ public class Snake implements GameObject {
         if (newHead.gameObjectsInTile.contains(this)) {
             throw new SelfCollisionException();
         }
-        newHead.getGameObjectsInTile().add(this);
-        body.addFirst(newHead);
-        body.getLast().getGameObjectsInTile().remove(this);
-        body.removeLast();
+
         // Eat apples :
         for (GameObject gameObject : new ArrayList<>(newHead.getGameObjectsInTile())) {
             if (gameObject instanceof Apple) {
                 this.eat((Apple) gameObject);
+                return;
             }
         }
 
+        newHead.getGameObjectsInTile().add(this);
+        body.addFirst(newHead);
+
+        body.getLast().getGameObjectsInTile().remove(this);
+        body.removeLast();
+
+
     }
+
 }
