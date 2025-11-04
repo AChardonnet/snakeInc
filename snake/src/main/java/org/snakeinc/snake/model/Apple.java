@@ -1,31 +1,17 @@
 package org.snakeinc.snake.model;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.util.Random;
 import lombok.Getter;
-import org.snakeinc.snake.GamePanel;
 
-public class Apple {
+@Getter
+public class Apple implements GameObject {
 
-    @Getter
-    private Tile position;
-    private final Random random;
+    private final Cell cell;
 
     public Apple() {
-        random = new Random();
-        updateLocation();
-    }
-
-    public void updateLocation() {
-        position = new Tile(random.nextInt(0, (GamePanel.GAME_WIDTH / GamePanel.TILE_SIZE)),
-                random.nextInt(0, (GamePanel.GAME_HEIGHT / GamePanel.TILE_SIZE)));
-
-    }
-
-    public void draw(Graphics g) {
-        g.setColor(Color.RED);
-        position.drawOval(g);
+        var random = new Random();
+        cell = Grid.getInstance().getTile(random.nextInt(0, Grid.TILES_X), random.nextInt(0, Grid.TILES_Y));
+        cell.gameObjectsInTile.add(this);
     }
 
 }

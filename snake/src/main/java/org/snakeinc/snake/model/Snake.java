@@ -1,70 +1,74 @@
 package org.snakeinc.snake.model;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.util.ArrayList;
+import org.snakeinc.snake.exception.OutOfPlayException;
+import org.snakeinc.snake.exception.SelfCollisionException;
 
-public class Snake {
+public class Snake implements GameObject {
 
-    private final ArrayList<Tile> body;
+    private final ArrayList<Cell> body;
 
     public Snake() {
         body = new ArrayList<>();
-        body.add(new Tile(5, 5)); // La tête du serpent
+        Cell head = Grid.getInstance().getTile(5, 5);
+        body.add(head);
+        head.getGameObjectsInTile().add(this);
     }
 
-    public ArrayList<Tile> getBody() {
+    public ArrayList<Cell> getBody() {
         return body;
     }
 
-    public Tile getHead() {
+    public Cell getHead() {
         return body.getFirst();
     }
 
     public void eat(Apple apple) {
-        body.add(apple.getPosition());
+        body.addFirst(apple.getCell());
+        apple.getCell().getGameObjectsInTile().add(this);
+        Basket.getInstance().removeApple(apple);
     }
 
-    public void move(char direction) {
-        Tile newHead = getHead().copy();
-
+    public void move(char direction) throws OutOfPlayException, SelfCollisionException {
+        int x = getHead().getX();
+        int y = getHead().getY();
         switch (direction) {
             case 'U':
-                newHead.setY(newHead.getY() - 1);
+                y--;
                 break;
             case 'D':
-                newHead.setY(newHead.getY() + 1);
+                y++;
                 break;
             case 'L':
-                newHead.setX(newHead.getX() - 1);
+                x--;
                 break;
             case 'R':
-                newHead.setX(newHead.getX() + 1);
+                x++;
                 break;
         }
-
-        body.addFirst(newHead);
-        body.removeLast(); // Supprime le dernier segment pour simuler le déplacement
-    }
-
-    public void draw(Graphics g) {
-        for (Tile t : body) {
-            g.setColor(Color.GREEN);
-            t.drawRectangle(g);
+        Cell newHead = Grid.getInstance().getTile(x, y);
+        if (newHead == null) {
+            throw new OutOfPlayException();
         }
-    }
+        if (newHead.gameObjectsInTile.contains(this)) {
+            throw new SelfCollisionException();
+        }
 
-    public boolean checkSelfCollision() {
-        for (int i = 1; i < body.size(); i++) {
-            if (getHead().equals(body.get(i))) {
-                return true;
+        // Eat apples :
+        for (GameObject gameObject : new ArrayList<>(newHead.getGameObjectsInTile())) {
+            if (gameObject instanceof Apple) {
+                this.eat((Apple) gameObject);
+                return;
             }
         }
-        return false;
-    }
 
-    public boolean checkWallCollision() {
-        return !getHead().isInsideGame();
+        newHead.getGameObjectsInTile().add(this);
+        body.addFirst(newHead);
+
+        body.getLast().getGameObjectsInTile().remove(this);
+        body.removeLast();
+
+
     }
 
 }
