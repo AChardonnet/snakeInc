@@ -14,6 +14,7 @@ public class Game {
     public Game() {
         grid = new Grid();
         basket = new Basket(grid);
+        basket.refillIfNeeded(1);
         snake = new Snake(apple -> basket.removeApple(apple), grid);
     }
 
