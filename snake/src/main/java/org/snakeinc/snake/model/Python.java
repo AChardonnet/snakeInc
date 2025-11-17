@@ -11,6 +11,8 @@ public final class Python extends Snake {
 
     @Override
     public void eat(Food food, Cell cell) throws DiedOfMalnutritionException {
+        fruits++;
+        updateScore(food);
         switch (food.getFoodType()) {
             case APPLE:
                 onAppleEatenListener.onAppleEaten(food, cell);

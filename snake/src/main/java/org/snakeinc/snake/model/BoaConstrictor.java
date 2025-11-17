@@ -10,6 +10,8 @@ public final class BoaConstrictor extends Snake {
 
     @Override
     public void eat(Food food, Cell cell) throws DiedOfMalnutritionException {
+        fruits++;
+        updateScore(food);
         switch (food.getFoodType()) {
             case APPLE:
                 if (body.size() <= 1) {
