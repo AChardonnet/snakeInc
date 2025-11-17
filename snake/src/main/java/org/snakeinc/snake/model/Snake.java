@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import org.snakeinc.snake.GameParams;
 import org.snakeinc.snake.exception.OutOfPlayException;
 import org.snakeinc.snake.exception.SelfCollisionException;
+import org.snakeinc.snake.utils.Direction;
 
 public class Snake {
 
@@ -34,20 +35,20 @@ public class Snake {
         onAppleEatenListener.onAppleEaten(apple, cell);
     }
 
-    public void move(char direction) throws OutOfPlayException, SelfCollisionException {
+    public void move(Direction direction) throws OutOfPlayException, SelfCollisionException {
         int x = getHead().getX();
         int y = getHead().getY();
         switch (direction) {
-            case 'U':
+            case U:
                 y--;
                 break;
-            case 'D':
+            case D:
                 y++;
                 break;
-            case 'L':
+            case L:
                 x--;
                 break;
-            case 'R':
+            case R:
                 x++;
                 break;
         }
