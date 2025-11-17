@@ -15,9 +15,10 @@ public abstract sealed class Snake permits Anaconda, BoaConstrictor, Python {
     protected final AppleEatenListener onAppleEatenListener;
     protected final Grid grid;
     protected final SnakeColor snakeColor;
-    private static int moves;
-    private static int fruits;
-    private static int score;
+    protected static int moves;
+    protected static int fruits;
+    protected static int score;
+    protected SnakeState state = new GoodHealth(this);
 
     public Snake(AppleEatenListener listener, Grid grid, SnakeColor snakeColor) {
         this.snakeColor = snakeColor;
@@ -62,13 +63,11 @@ public abstract sealed class Snake permits Anaconda, BoaConstrictor, Python {
         return snakeColor;
     }
 
-    public void eat(Food food, Cell cell) throws DiedOfMalnutritionException {
-        fruits++;
-        updateScore(food);
-        body.addFirst(cell);
-        cell.addSnake(this);
-        onAppleEatenListener.onAppleEaten(food, cell);
+    public void setState(SnakeState state) {
+        this.state = state;
     }
+
+    public void eat(Food food, Cell cell) throws DiedOfMalnutritionException {}
 
     public void updateScore(Food food) {
         switch (food) {
@@ -87,6 +86,7 @@ public abstract sealed class Snake permits Anaconda, BoaConstrictor, Python {
 
     public void move(Direction direction) throws OutOfPlayException, SelfCollisionException, DiedOfMalnutritionException {
         moves++;
+        direction = state.movementModifier(direction);
         int x = getHead().getX();
         int y = getHead().getY();
         switch (direction) {
@@ -113,7 +113,7 @@ public abstract sealed class Snake permits Anaconda, BoaConstrictor, Python {
 
         // Eat apple :
         if (newHead.containsAFood()) {
-            this.eat(newHead.getFood(), newHead);
+            eat(newHead.getFood(), newHead);
             return;
         }
 

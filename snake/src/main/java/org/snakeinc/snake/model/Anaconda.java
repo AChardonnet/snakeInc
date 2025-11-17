@@ -12,13 +12,16 @@ public final class Anaconda extends Snake {
     public void eat(Food food, Cell cell) throws DiedOfMalnutritionException {
         fruits++;
         updateScore(food);
-        switch (food.getFoodType()) {
-            case APPLE:
+        switch (food) {
+            case Apple a:
                 body.addFirst(cell);
                 cell.addSnake(this);
                 onAppleEatenListener.onAppleEaten(food, cell);
+                if (a.isPoisoned()) {
+                    state.eatPoison();
+                }
                 break;
-            case BROCOLIS:
+            case Brocolis b:
                 if (body.size() <= 2) {
                     throw new DiedOfMalnutritionException();
                 }
@@ -29,6 +32,7 @@ public final class Anaconda extends Snake {
                 body.removeLast();
 
                 onAppleEatenListener.onAppleEaten(food, cell);
+                state.eatBrocolis();
                 break;
         }
     }

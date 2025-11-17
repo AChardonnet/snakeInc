@@ -13,11 +13,11 @@ public final class Python extends Snake {
     public void eat(Food food, Cell cell) throws DiedOfMalnutritionException {
         fruits++;
         updateScore(food);
-        switch (food.getFoodType()) {
-            case APPLE:
+        switch (food) {
+            case Apple a:
                 onAppleEatenListener.onAppleEaten(food, cell);
                 break;
-            case BROCOLIS:
+            case Brocolis b:
                 if (body.size() <= 3) {
                     throw new DiedOfMalnutritionException();
                 }
