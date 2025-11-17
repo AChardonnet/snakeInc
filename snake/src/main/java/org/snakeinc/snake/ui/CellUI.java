@@ -4,7 +4,10 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+
 import lombok.AllArgsConstructor;
+import org.snakeinc.snake.model.Apple;
+import org.snakeinc.snake.model.Brocolis;
 import org.snakeinc.snake.model.Cell;
 import org.snakeinc.snake.utils.SnakeColor;
 
@@ -30,13 +33,21 @@ public class CellUI {
     public void draw(Graphics g) {
 
         if (cell.containsAFood()) {
-            switch (cell.getFood().getFoodType()) {
-                case APPLE:
-                    g.setColor(Color.RED);
-                    break;
-                case BROCOLIS:
-                    g.setColor(Color.GREEN);
-                    break;
+            switch (cell.getFood()) {
+                case Apple a -> {
+                    if (!a.isPoisoned()) {
+                        g.setColor(Color.RED);
+                    } else {
+                        g.setColor(Color.MAGENTA);
+                    }
+                }
+                case Brocolis b -> {
+                    if (!b.isSteamed()) {
+                        g.setColor(Color.GREEN);
+                    } else {
+                        g.setColor(Color.YELLOW);
+                    }
+                }
             }
             drawOval(g);
         }

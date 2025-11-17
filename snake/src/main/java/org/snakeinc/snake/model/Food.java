@@ -4,7 +4,7 @@ import lombok.Getter;
 import org.snakeinc.snake.utils.FoodType;
 
 @Getter
-public class Food {
+public abstract sealed class Food permits Apple, Brocolis {
     protected FoodType foodType;
 
     public Food(FoodType foodType) {
