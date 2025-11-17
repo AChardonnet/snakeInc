@@ -2,6 +2,7 @@ package org.snakeInc.snake;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.snakeinc.snake.exception.AppleInBodyException;
 import org.snakeinc.snake.exception.OutOfPlayException;
 import org.snakeinc.snake.exception.SelfCollisionException;
 import org.snakeinc.snake.model.Game;
@@ -44,5 +45,10 @@ public class SnakeTest {
         game.getSnake().move(Direction.L);
         game.getSnake().move(Direction.D);
         Assertions.assertThrows(SelfCollisionException.class, () -> game.getSnake().move(Direction.R));
+    }
+
+    @Test
+    public void appleInBody_Throws_AppleInBodyException() {
+        Assertions.assertThrows(AppleInBodyException.class, () -> game.getBasket().addApple(game.getGrid().getTile(5, 5)));
     }
 }

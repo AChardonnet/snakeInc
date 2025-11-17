@@ -20,7 +20,11 @@ public class Basket {
     public void addApple(Cell cell) {
         if (cell == null) {
             var random = new Random();
-            cell = grid.getTile(random.nextInt(0, GameParams.TILES_X), random.nextInt(0, GameParams.TILES_Y));
+            boolean inSnake = true;
+            while (inSnake) {
+                cell = grid.getTile(random.nextInt(0, GameParams.TILES_X), random.nextInt(0, GameParams.TILES_Y));
+                inSnake = cell.containsASnake();
+            }
         }
         Apple apple = AppleFactory.createAppleInCell(cell);
         apples.add(apple);

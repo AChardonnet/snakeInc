@@ -3,6 +3,7 @@ package org.snakeinc.snake.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import org.snakeinc.snake.exception.AppleInBodyException;
 
 
 @Data
@@ -24,6 +25,9 @@ public class Cell {
     }
 
     public void addApple(Apple apple) {
+        if (containsASnake()) {
+            throw new AppleInBodyException();
+        }
         this.apple = apple;
     }
 
