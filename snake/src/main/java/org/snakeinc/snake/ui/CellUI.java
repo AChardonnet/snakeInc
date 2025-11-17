@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import lombok.AllArgsConstructor;
 import org.snakeinc.snake.model.Cell;
+import org.snakeinc.snake.utils.SnakeColor;
 
 @AllArgsConstructor
 public class CellUI {
@@ -14,10 +15,10 @@ public class CellUI {
     private int upperPixelX;
     private int upperPixelY;
 
-    public void drawRectangle(Graphics g) {
+    public void drawRectangle(Graphics g, Color color) {
         g.fillRect(upperPixelX, upperPixelY, GamePanel.TILE_PIXEL_SIZE, GamePanel.TILE_PIXEL_SIZE);
         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(Color.GREEN.darker());
+        g2.setColor(color.darker());
         g2.setStroke(new BasicStroke(2));
         g2.drawRect(upperPixelX, upperPixelY, GamePanel.TILE_PIXEL_SIZE, GamePanel.TILE_PIXEL_SIZE);
     }
@@ -33,8 +34,21 @@ public class CellUI {
             drawOval(g);
         }
         if (cell.containsASnake()) {
-            g.setColor(Color.GREEN);
-            drawRectangle(g);
+            SnakeColor snakeColor = cell.getSnake().getSnakeColor();
+            Color color = null;
+            switch (snakeColor) {
+                case BLUE:
+                    color = Color.BLUE;
+                    break;
+                case GREEN:
+                    color = Color.GREEN;
+                    break;
+                case GRAY:
+                    color = Color.GRAY;
+                    break;
+            }
+            g.setColor(color);
+            drawRectangle(g, color);
         }
 
     }

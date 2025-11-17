@@ -2,23 +2,33 @@ package org.snakeinc.snake.model;
 
 import java.util.ArrayList;
 import org.snakeinc.snake.GameParams;
+import org.snakeinc.snake.exception.DiedOfMalnutritionException;
 import org.snakeinc.snake.exception.OutOfPlayException;
 import org.snakeinc.snake.exception.SelfCollisionException;
+import org.snakeinc.snake.utils.SnakeColor;
 import org.snakeinc.snake.utils.Direction;
 
-public class Snake {
+public abstract sealed class Snake permits Anaconda, BoaConstrictor, Python {
 
-    private final ArrayList<Cell> body;
-    private final AppleEatenListener onAppleEatenListener;
-    private final Grid grid;
+    protected final ArrayList<Cell> body;
+    protected final AppleEatenListener onAppleEatenListener;
+    protected final Grid grid;
+    protected final SnakeColor snakeColor;
 
-    public Snake(AppleEatenListener listener, Grid grid) {
+    public Snake(AppleEatenListener listener, Grid grid, SnakeColor snakeColor) {
+        this.snakeColor = snakeColor;
         this.body = new ArrayList<>();
         this.onAppleEatenListener = listener;
         this.grid = grid;
         Cell head = grid.getTile(GameParams.SNAKE_DEFAULT_X, GameParams.SNAKE_DEFAULT_Y);
         head.addSnake(this);
         body.add(head);
+        Cell bodySegment = grid.getTile(GameParams.SNAKE_DEFAULT_X - 1, GameParams.SNAKE_DEFAULT_Y - 1);
+        bodySegment.addSnake(this);
+        body.add(bodySegment);
+        bodySegment = grid.getTile(GameParams.SNAKE_DEFAULT_X - 2, GameParams.SNAKE_DEFAULT_Y - 2);
+        bodySegment.addSnake(this);
+        body.add(bodySegment);
     }
 
     public int getSize() {
@@ -29,13 +39,17 @@ public class Snake {
         return body.getFirst();
     }
 
-    public void eat(Apple apple, Cell cell) {
+    public SnakeColor getSnakeColor() {
+        return snakeColor;
+    }
+
+    public void eat(Apple apple, Cell cell) throws DiedOfMalnutritionException {
         body.addFirst(cell);
         cell.addSnake(this);
         onAppleEatenListener.onAppleEaten(apple, cell);
     }
 
-    public void move(Direction direction) throws OutOfPlayException, SelfCollisionException {
+    public void move(Direction direction) throws OutOfPlayException, SelfCollisionException, DiedOfMalnutritionException {
         int x = getHead().getX();
         int y = getHead().getY();
         switch (direction) {
