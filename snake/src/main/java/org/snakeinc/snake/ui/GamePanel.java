@@ -17,6 +17,7 @@ import org.snakeinc.snake.exception.DiedOfMalnutritionException;
 import org.snakeinc.snake.exception.OutOfPlayException;
 import org.snakeinc.snake.exception.SelfCollisionException;
 import org.snakeinc.snake.model.Game;
+import org.snakeinc.snake.model.Snake;
 import org.snakeinc.snake.utils.Direction;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
@@ -59,7 +60,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         g.setColor(Color.RED);
         g.setFont(new Font("Arial", Font.BOLD, 20));
         FontMetrics metrics = getFontMetrics(g.getFont());
-        g.drawString("Game Over", (GAME_PIXEL_WIDTH - metrics.stringWidth("Game Over")) / 2, GAME_PIXEL_HEIGHT / 2);
+        int y = GAME_PIXEL_HEIGHT / 2;
+        int dy = metrics.getAscent();
+        drawTextLineCentered(g, "Game Over", y - 2 * dy);
+        drawTextLineCentered(g, "Score : " + Snake.getScore(), y - dy);
+        drawTextLineCentered(g, "Moves : " + Snake.getMoves(), y);
+        drawTextLineCentered(g, "Fruits : " + Snake.getFruits(), y + dy);
+    }
+
+    private void drawTextLineCentered(Graphics g, String text, int y) {
+        FontMetrics metrics = getFontMetrics(g.getFont());
+        g.drawString(text, (GAME_PIXEL_WIDTH - metrics.stringWidth(text)) / 2, y);
     }
 
     @Override
