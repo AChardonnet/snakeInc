@@ -17,18 +17,18 @@ public class Cell {
     private int y;
 
     Snake snake;
-    Apple apple;
+    Food food;
 
     protected Cell(int x, int y) {
         setX(x);
         setY(y);
     }
 
-    public void addApple(Apple apple) {
+    public void addFood(Food food) {
         if (containsASnake()) {
             throw new AppleInBodyException();
         }
-        this.apple = apple;
+        this.food = food;
     }
 
     public void addSnake(Snake snake) {
@@ -39,16 +39,16 @@ public class Cell {
         this.snake = null;
     }
 
-    public void removeApple() {
-        this.apple = null;
+    public void removeFood() {
+        this.food = null;
     }
 
     public boolean containsASnake() {
         return this.snake != null;
     }
-    
-    public boolean containsAnApple() {
-        return this.apple != null;
+
+    public boolean containsAFood() {
+        return this.food != null;
     }
 
 }

@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+
 import org.snakeinc.snake.GameParams;
 import org.snakeinc.snake.exception.DiedOfMalnutritionException;
 import org.snakeinc.snake.exception.OutOfPlayException;

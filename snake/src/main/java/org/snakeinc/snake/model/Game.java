@@ -23,13 +23,13 @@ public class Game {
         basket.refillIfNeeded(1);
         switch (snakes[random.nextInt(snakes.length)]) {
             case "Anaconda":
-                snake = new Anaconda((apple, cell) -> basket.removeAppleInCell(apple,cell), grid);
+                snake = new Anaconda((apple, cell) -> basket.removeFoodInCell(apple, cell), grid);
                 break;
             case "BoaConstrictor":
-                snake = new BoaConstrictor((apple, cell) -> basket.removeAppleInCell(apple,cell), grid);
+                snake = new BoaConstrictor((apple, cell) -> basket.removeFoodInCell(apple, cell), grid);
                 break;
             default:
-                snake = new Python((apple, cell) -> basket.removeAppleInCell(apple,cell), grid);
+                snake = new Python((apple, cell) -> basket.removeFoodInCell(apple, cell), grid);
                 break;
 
         }

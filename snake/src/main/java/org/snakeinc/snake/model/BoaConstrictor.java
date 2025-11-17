@@ -9,13 +9,20 @@ public final class BoaConstrictor extends Snake {
     }
 
     @Override
-    public void eat(Apple apple, Cell cell) throws DiedOfMalnutritionException {
-        if (body.size() == 1) {
-            throw new DiedOfMalnutritionException();
-        }
-        onAppleEatenListener.onAppleEaten(apple, cell);
+    public void eat(Food food, Cell cell) throws DiedOfMalnutritionException {
+        switch (food.getFoodType()) {
+            case APPLE:
+                if (body.size() <= 1) {
+                    throw new DiedOfMalnutritionException();
+                }
+                onAppleEatenListener.onAppleEaten(food, cell);
 
-        body.getLast().removeSnake();
-        body.removeLast();
+                body.getLast().removeSnake();
+                body.removeLast();
+                break;
+            case BROCOLIS:
+                onAppleEatenListener.onAppleEaten(food, cell);
+                break;
+        }
     }
 }

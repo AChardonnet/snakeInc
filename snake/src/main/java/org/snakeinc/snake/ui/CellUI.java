@@ -29,24 +29,24 @@ public class CellUI {
 
     public void draw(Graphics g) {
 
-        if (cell.containsAnApple()) {
-            g.setColor(Color.RED);
+        if (cell.containsAFood()) {
+            switch (cell.getFood().getFoodType()) {
+                case APPLE:
+                    g.setColor(Color.RED);
+                    break;
+                case BROCOLIS:
+                    g.setColor(Color.GREEN);
+                    break;
+            }
             drawOval(g);
         }
         if (cell.containsASnake()) {
             SnakeColor snakeColor = cell.getSnake().getSnakeColor();
-            Color color = null;
-            switch (snakeColor) {
-                case BLUE:
-                    color = Color.BLUE;
-                    break;
-                case GREEN:
-                    color = Color.GREEN;
-                    break;
-                case GRAY:
-                    color = Color.GRAY;
-                    break;
-            }
+            Color color = switch (snakeColor) {
+                case BLUE -> Color.BLUE;
+                case GREEN -> Color.GREEN;
+                case GRAY -> Color.GRAY;
+            };
             g.setColor(color);
             drawRectangle(g, color);
         }

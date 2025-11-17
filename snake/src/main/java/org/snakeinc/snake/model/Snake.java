@@ -1,6 +1,7 @@
 package org.snakeinc.snake.model;
 
 import java.util.ArrayList;
+
 import org.snakeinc.snake.GameParams;
 import org.snakeinc.snake.exception.DiedOfMalnutritionException;
 import org.snakeinc.snake.exception.OutOfPlayException;
@@ -43,7 +44,7 @@ public abstract sealed class Snake permits Anaconda, BoaConstrictor, Python {
         return snakeColor;
     }
 
-    public void eat(Apple apple, Cell cell) throws DiedOfMalnutritionException {
+    public void eat(Food apple, Cell cell) throws DiedOfMalnutritionException {
         body.addFirst(cell);
         cell.addSnake(this);
         onAppleEatenListener.onAppleEaten(apple, cell);
@@ -75,8 +76,8 @@ public abstract sealed class Snake permits Anaconda, BoaConstrictor, Python {
         }
 
         // Eat apple :
-        if (newHead.containsAnApple()) {
-            this.eat(newHead.getApple(), newHead);
+        if (newHead.containsAFood()) {
+            this.eat(newHead.getFood(), newHead);
             return;
         }
 
